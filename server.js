@@ -46,11 +46,13 @@ io.on('connection', function (socket) {
     });
 
     socket.on('changeStatus', function(bStatus){
-        oUsers[ownUuid].inCoffee = bStatus;
-        socket.broadcast.emit('statusChanged', {
-            uuid: ownUuid,
-            inCoffee: bStatus
-        })
+        if(oUsers.hasOwnProperty(ownUuid)){
+            oUsers[ownUuid].inCoffee = bStatus;
+            socket.broadcast.emit('statusChanged', {
+                uuid: ownUuid,
+                inCoffee: bStatus
+            })
+        }
     });
 
 
