@@ -19,10 +19,8 @@ app.use("/", express.static(__dirname + '/'));
 
 io.on('connection', function (socket) {
     var ownUuid = uuid();
-    console.log("New Connection: "+ownUuid);
 
     socket.on('disconnect', function(){
-        console.log('Disconnected: '+ownUuid);
         delete(oUsers[ownUuid]);
         socket.broadcast.emit('userDisconnected', {
             uuid: ownUuid
@@ -30,7 +28,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('register', function(sName){
-        console.log('Register: '+sName);
         socket.emit('registerOk', {connectedUsers:oUsers});
 
         socket.broadcast.emit('newUser', {
@@ -55,14 +52,14 @@ io.on('connection', function (socket) {
         }
     });
 
-
-
-    /*socket.emit('priceUpdate',currentPrice);
-     socket.on('bid', function (data) {
-     currentPrice = parseInt(data);
-     socket.emit('priceUpdate',currentPrice);
-     socket.broadcast.emit('priceUpdate',currentPrice);
-     });*/
+    socket.on('msgToAll', function(msg){
+        if(oUsers.hasOwnProperty(ownUuid)){
+            socket.broadcast.emit('msgBroadcast', {
+                userName: oUsers[ownUuid].name,
+                msg: msg
+            })
+        }
+    })
 });
 
 

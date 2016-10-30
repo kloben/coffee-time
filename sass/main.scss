@@ -1,0 +1,79 @@
+body{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+coffee-time{
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+
+.logoContainer{
+  margin-top: -150px;
+  height: 300px;
+  width: 100%;
+  background-image: url(../img/coffee.jpg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
+
+  &:hover{
+    background-image: url(../img/coffee-hover.jpg);
+  }
+  &.active{
+    background-image: url(../img/coffee.gif);
+  }
+}
+
+.usernameContainer{
+
+  .usernameSet{
+    background-color: #177dff;
+    color: white;
+    padding: 5px 20px;
+    position: relative;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+}
+
+.peopleContainer{
+  text-align: left;
+  font-weight: bold;
+  span{
+    font-weight: 300;
+    float: right;
+  }
+}
+
+.statusIndicator{
+  font-size: 24px;
+  padding-bottom: 20px;
+}
+
+.isBox{
+  border: 1px solid #b5b2b2;
+  padding: 25px;
+  width: 100%;
+  background-color: #e0e0e0;
+  margin-bottom: 25px;
+  border-radius: 10px;
+}
+
+input{
+  width: 100%;
+  padding: 6px;
+
+  &.msgToAll{
+    margin-top: 30px;
+  }
+}

@@ -10,12 +10,15 @@ const paths = {
     ],
     siteDev: [
 
+    ],
+    sass:[
+        './sass/main.scss'
     ]
 };
 
 
 
-gulp.task('app', [], function () {
+gulp.task('app', function () {
     return gulp
         .src('site/*.ts')
         .pipe(typescript(tscConfig.compilerOptions))
@@ -23,12 +26,17 @@ gulp.task('app', [], function () {
         .pipe(gulp.dest('dist/app'));
 });
 
+gulp.task('sass', function () {
+    return gulp
+        .src(paths.sass)
+        .pipe(concat('coffe-time.css'))
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./dist/css'));
+});
 
-gulp.task('all', ['vendor', 'dev', 'sass', 'site', 'siteAngularVendorMin', 'siteAngularMin']);
+
+gulp.task('all', ['app', 'sass']);
 
 gulp.task('watch', function(){
-    gulp.watch(paths.js, ['dev']);
-    gulp.watch(paths.scss, ['sass']);
-    gulp.watch(paths.wiquotSiteVendorAngular, ['siteAngularVendor']);
-    gulp.watch(paths.wiquotSiteAngular, ['siteAngular']);
+    gulp.watch(paths.sass, ['sass']);
 });

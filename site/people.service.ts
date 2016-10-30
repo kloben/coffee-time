@@ -1,5 +1,3 @@
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 import {User} from "./user";
 
@@ -18,8 +16,11 @@ export class PeopleService {
         return this.peopleList;
     }
 
+    sendToAll(msg){
+        this.socket.emit('msgToAll', msg);
+    }
+
     register(userName){
-        console.info("Username: "+userName);
         this.userName = userName;
 
         this.socket = io(this.url);
@@ -31,14 +32,15 @@ export class PeopleService {
             for(var i = 0;i<count;i++){
                 if(this.peopleList[i].getData('uuid') == data.uuid){
                     this.peopleList[i].setStatus(data.inCoffee);
+                    if(data.inCoffee){
+                        new Notification('Coffee Time', {body: this.peopleList[i].getData('name')+' quiere café'});
+                    }
                     return;
                 }
             }
         });
 
         this.socket.on('registerOk', (data) => {
-            console.info('registerOk');
-
             for(var sUuid in data.connectedUsers){
                 let oUser = data.connectedUsers[sUuid];
 
@@ -60,6 +62,10 @@ export class PeopleService {
                     return;
                 }
             }
-        })
+        });
+
+        this.socket.on('msgBroadcast', (data) => {
+            new Notification(data.userName+' dice', {body: data.msg})
+        });
     }
 }
