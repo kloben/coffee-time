@@ -1,16 +1,19 @@
 export class User{
     name: string;
-    status: string;
+    inCoffee: boolean;
+    uuid: string;
 
-    constructor(name:string){
+    constructor(uuid:string,name:string, inCoffee:boolean){
+        this.uuid = uuid;
         this.name = name;
+        this.inCoffee = inCoffee;
     }
 
     getData(dataId:string): string{
         return this[dataId];
     }
 
-    setStatus(status:string): void{
-        this.status = status;
+    setStatus(inCoffee:boolean): void{
+        this.inCoffee = inCoffee;
     }
 }

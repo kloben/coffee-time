@@ -33,9 +33,32 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center center;
+            cursor: pointer;
         }
         .logoContainer:hover{
             background-image: url(dist/img/coffee-hover.jpg);
+        }
+        .logoContainer.active{
+            background-image: url(dist/img/coffee.gif);
+        }
+        .usernameContainer{
+            border: 1px solid grey;
+            padding: 25px;
+            width: 100%;
+        }
+
+        .usernameContainer input{
+            width: 100%;
+            padding: 6px;
+        }
+
+        .usernameContainer .usernameSet{
+            background-color: #177dff;
+            color: white;
+            padding: 5px 20px;
+            position: relative;
+            margin-top: 20px;
+            cursor: pointer;
         }
     </style>
 </head>
