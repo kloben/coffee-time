@@ -2,7 +2,7 @@ import * as io from 'socket.io-client';
 import {User} from "./user";
 
 export class PeopleService {
-    private url = 'http://localhost:8000';
+    private url = '/';
     private userName:string;
     private socket;
 
@@ -33,7 +33,7 @@ export class PeopleService {
                 if(this.peopleList[i].getData('uuid') == data.uuid){
                     this.peopleList[i].setStatus(data.inCoffee);
                     if(data.inCoffee){
-                        new Notification('Coffee Time', {body: this.peopleList[i].getData('name')+' quiere café'});
+                        new Notification('Coffee Time', {icon:'/dist/img/coffee.jpg',body: this.peopleList[i].getData('name')+' quiere café'});
                     }
                     return;
                 }
@@ -65,7 +65,7 @@ export class PeopleService {
         });
 
         this.socket.on('msgBroadcast', (data) => {
-            new Notification(data.userName+' dice', {body: data.msg})
+            new Notification(data.userName+' dice', {icon:'/dist/img/coffee.jpg',body: data.msg})
         });
     }
 }
