@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>Icarus 3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 1. Load libraries -->
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('app').catch(function(err){ console.error(err); });
+    </script>
+    <style>
+        coffee-time{
+            margin: 0 auto;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 500px;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+        }
+        .logoContainer{
+            margin-top: -150px;
+            height: 300px;
+            width: 100%;
+            background-image: url(dist/img/coffee.jpg);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        .logoContainer:hover{
+            background-image: url(dist/img/coffee-hover.jpg);
+        }
+    </style>
+</head>
+<!-- 3. Display the application -->
+<body>
+<coffee-time>Loading...</coffee-time>
+</body>
+</html>
