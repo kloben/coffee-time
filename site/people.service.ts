@@ -1,3 +1,4 @@
+/// <reference path="../node_modules/@types/socket.io-client/index.d.ts" />
 import * as io from 'socket.io-client';
 import {User} from "./user";
 declare var Notification: any;
