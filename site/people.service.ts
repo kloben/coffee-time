@@ -1,5 +1,6 @@
 import * as io from 'socket.io-client';
 import {User} from "./user";
+declare var Notification: any;
 
 export class PeopleService {
     private url = '/';

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {PeopleService} from "./people.service";
+declare var Notification: any;
 
 @Component({
     selector: 'coffee-time',
