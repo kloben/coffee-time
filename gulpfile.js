@@ -49,6 +49,15 @@ gulp.task('browserify', function () {
         .pipe(gulp.dest('./build'));
 });
 
+gulp.task('browserifyDev', function () {
+    var bundleStream = browserify('./build/main.js').bundle();
+
+    return bundleStream
+        .pipe(source('./build/main.js'))
+        .pipe(streamify(rename('site-all.js')))
+        .pipe(gulp.dest('dist/js'));
+});
+
 gulp.task('minify', function() {
     return gulp.src('./build/full-build.js')
         .pipe(uglify())
@@ -90,12 +99,17 @@ gulp.task('buildJs', function() {
     runSequence('cleanJs', 'tsc', 'browserify', 'minify');
 });
 
+gulp.task('devJs', function() {
+    runSequence('cleanJs', 'tsc', 'browserifyDev');
+});
+
 gulp.task('buildCss', function() {
     runSequence('cleanCss', 'sass');
 });
 
 gulp.task('watch', function(){
-    gulp.watch(paths.devJs, ['build']);
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.devJs, ['devJs'])
 });
 
 

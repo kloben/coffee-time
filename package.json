@@ -14,7 +14,7 @@
     "serve": "http-server . -p 5556",
     "build": "npm run clean && tsc",
     "build_prod": "npm run build && browserify -s main build/main.js > dist/js/bundle.js && npm run minify",
-    "minify": "uglifyjs dist/js/bundle.js --screw-ie8 --compress --mangle --output dist/bundle.min.js"
+    "minify": "uglifyjs build/full-build.js --screw-ie8 --compress --mangle --output dist/js/bundle.min.js"
   },
   "licenses": [
     {
