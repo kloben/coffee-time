@@ -10,9 +10,9 @@ var runSequence = require('run-sequence');
 var browserify = require('browserify');
 var streamify = require('gulp-streamify');
 var source = require('vinyl-source-stream');
-var rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
 
-//var transform = require('vinyl-transform');
+var rename = require('gulp-rename');
 
 
 
@@ -43,10 +43,17 @@ gulp.task('tsc', function () {
 gulp.task('browserify', function () {
     var bundleStream = browserify('./build/main.js').bundle();
 
-    bundleStream
+    return bundleStream
         .pipe(source('./build/main.js'))
         .pipe(streamify(rename('full-build.js')))
         .pipe(gulp.dest('./build'));
+});
+
+gulp.task('minify', function() {
+    return gulp.src('./build/full-build.js')
+        .pipe(uglify())
+        .pipe(rename('site-all.js'))
+        .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('mergeVendor', function(){
@@ -58,11 +65,11 @@ gulp.task('mergeVendor', function(){
 
 gulp.task('cleanJs', function () {
     del('dist/js/*');
-    del('build/*');
+    return del('build/*');
 });
 
 gulp.task('cleanCss', function () {
-    del('dist/css/*');
+    return del('dist/css/*');
 });
 
 gulp.task('sass', function () {
@@ -79,10 +86,17 @@ gulp.task('sass', function () {
 
 
 
-gulp.task('build', function(done) {
-    runSequence('cleanJs', 'tsc', 'browserify', 'cleanCss', 'sass');
+gulp.task('buildJs', function() {
+    runSequence('cleanJs', 'tsc', 'browserify', 'minify');
+});
+
+gulp.task('buildCss', function() {
+    runSequence('cleanCss', 'sass');
 });
 
 gulp.task('watch', function(){
     gulp.watch(paths.devJs, ['build']);
 });
+
+
+gulp.task('buildAll', ['buildJs', 'buildCss']);
