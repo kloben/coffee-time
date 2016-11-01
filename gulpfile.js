@@ -7,16 +7,21 @@ const tsc = require('gulp-typescript');
 const tscConfig = require('./tsconfig.json');
 
 var runSequence = require('run-sequence');
-var systemBuilder = require('systemjs-builder');
+var browserify = require('browserify');
+var streamify = require('gulp-streamify');
+var source = require('vinyl-source-stream');
+var rename = require('gulp-rename');
+
+//var transform = require('vinyl-transform');
+
 
 
 
 const paths = {
-    siteVendorJs: [
+    vendorJs: [
         "node_modules/zone.js/dist/zone.js",
         "node_modules/reflect-metadata/Reflect.js",
-        "node_modules/systemjs/dist/system.src.js",
-        "build/site.bundle.js"
+        "build/full-build.js"
     ],
     sass:[
         './sass/main.scss'
@@ -35,76 +40,29 @@ gulp.task('tsc', function () {
         .pipe(gulp.dest('./build'));
 });
 
-gulp.task('bundle', function () {
-    var builder = new systemBuilder('./build', {
-        paths: {
-            'npm:': './node_modules/',
-            '*': '*.js'
-        },
-        meta: {
-            '@angular/*': {
-                build: false
-            },
-            'rxjs/*': {
-                build: false
-            }
-        },
-        map: {
-            // our app is within the app folder
-            app: 'site',
-            // angular bundles
-            '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
-            '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
-            '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
-            '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
-            '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
-            '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
-            '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
-            '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
-            // other libraries
-            'rxjs':                      'npm:rxjs',
-            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
-            'socket.io-client': 'npm:socket.io-client/socket.io.js'
-        },
-        // packages tells the System loader how to load when no filename and/or no extension
-        packages: {
-            app: {
-                main: './main.js',
-                defaultExtension: 'js'
-            },
-            rxjs: {
-                defaultExtension: 'js'
-            },
-            'angular-in-memory-web-api': {
-                main: './index.js',
-                defaultExtension: 'js'
-            }
-        }
-    });
+gulp.task('browserify', function () {
+    var bundleStream = browserify('./build/main.js').bundle();
 
-    return builder.bundle('main', 'build/site.bundle.js');
+    bundleStream
+        .pipe(source('./build/main.js'))
+        .pipe(streamify(rename('full-build.js')))
+        .pipe(gulp.dest('./build'));
 });
 
-gulp.task('prependWithVendor', function(){
-   return gulp.src(paths.siteVendorJs)
+gulp.task('mergeVendor', function(){
+   return gulp.src(paths.vendorJs)
        .pipe(concat('site-all.js'))
        .pipe(gulp.dest('dist/js'));
 });
 
 
-gulp.task('concat', function () {
-    return gulp
-        .src(paths.siteJs)
-        .pipe(concat('build.js'))
-        .pipe(gulp.dest('dist/js'));
+gulp.task('cleanJs', function () {
+    del('dist/js/*');
+    del('build/*');
 });
 
-gulp.task('cleanDist', function () {
-    return del('dist/js/*');
-});
-
-gulp.task('cleanBuild', function () {
-    return del('build/*');
+gulp.task('cleanCss', function () {
+    del('dist/css/*');
 });
 
 gulp.task('sass', function () {
@@ -122,7 +80,7 @@ gulp.task('sass', function () {
 
 
 gulp.task('build', function(done) {
-    runSequence('cleanBuild','cleanDist', 'tsc', 'bundle', 'prependWithVendor', 'sass');
+    runSequence('cleanJs', 'tsc', 'browserify', 'cleanCss', 'sass');
 });
 
 gulp.task('watch', function(){

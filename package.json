@@ -10,9 +10,6 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings",
-
-
-
     "clean": "rm -rf dist/js/*",
     "serve": "http-server . -p 5556",
     "build": "npm run clean && tsc",
@@ -52,20 +49,23 @@
     "zone.js": "^0.6.25"
   },
   "devDependencies": {
+    "@types/core-js": "^0.9.34",
+    "browserify": "^13.1.1",
     "concurrently": "^3.0.0",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
+    "gulp-minify": "0.0.14",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^2.2.0",
+    "gulp-streamify": "^1.0.2",
     "gulp-typescript": "^3.1.2",
     "lite-server": "^2.2.2",
     "run-sequence": "^1.2.2",
-    "systemjs-builder": "^0.15.33",
     "typescript": "^2.0.3",
-    "@types/core-js": "^0.9.34",
-    "browserify": "^13.1.1",
+    "typings": "^1.4.0",
     "uglifyjs": "^2.4.10",
-    "typings": "^1.4.0"
+    "vinyl-source-stream": "^1.1.0"
   }
 }
