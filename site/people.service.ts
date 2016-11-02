@@ -4,7 +4,7 @@ import {User} from "./user";
 declare var Notification: any;
 
 export class PeopleService {
-    private url = '/coffee/';
+    private url = '/';
     private userName:string;
     private socket;
 
@@ -35,7 +35,7 @@ export class PeopleService {
                 if(this.peopleList[i].getData('uuid') == data.uuid){
                     this.peopleList[i].setStatus(data.inCoffee);
                     if(data.inCoffee){
-                        new Notification('Coffee Time', {icon:'/coffee/dist/img/coffee.jpg',body: this.peopleList[i].getData('name')+' quiere café'});
+                        new Notification('Coffee Time', {icon:'/dist/img/coffee.jpg',body: this.peopleList[i].getData('name')+' quiere café'});
                     }
                     return;
                 }
@@ -67,7 +67,7 @@ export class PeopleService {
         });
 
         this.socket.on('msgBroadcast', (data) => {
-            new Notification(data.userName+' dice', {icon:'/coffee/dist/img/coffee.jpg',body: data.msg})
+            new Notification(data.userName+' dice', {icon:'/dist/img/coffee.jpg',body: data.msg})
         });
     }
 }
